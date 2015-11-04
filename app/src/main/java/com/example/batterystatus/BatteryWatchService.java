@@ -1,11 +1,7 @@
 package com.example.batterystatus;
 
 import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.BatteryManager;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -14,7 +10,6 @@ import java.util.Timer;
 public class BatteryWatchService extends Service {
     static String TAG = "BatteryWatchService";
     private Timer timer;
-    private MyBatteryReceiver mReceiver;
 
     public BatteryWatchService() {
     }
@@ -48,9 +43,7 @@ public class BatteryWatchService extends Service {
 //        }, 0, 5000);
 
         // TODO 6 バッテリー変化の受信を開始する (ACTION_BATTERY_CHANGED)
-        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        mReceiver = new MyBatteryReceiver();
-        registerReceiver(mReceiver, intentFilter);
+
 
         return START_STICKY;
     }
@@ -60,18 +53,13 @@ public class BatteryWatchService extends Service {
 //        timer.cancel();
 
         // TODO 7 受信を終了する
-        unregisterReceiver(mReceiver);
+
 
         super.onDestroy();
     }
 
 
     // TODO 5 バッテリーの状態が変化した時の動作を書くクラスMyBatteryReceiverを作成する
-    private class MyBatteryReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-            Log.d(TAG, "level:" + level);
-        }
-    }
+
+
 }

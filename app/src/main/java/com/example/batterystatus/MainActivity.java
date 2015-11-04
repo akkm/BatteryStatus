@@ -36,9 +36,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO 4 "ACTION_SCHOO"のBroadcastを送る
-                Intent intent = new Intent("ACTION_SCHOO");
-                intent.putExtra("Message", "メッセージですよ！！！");
-                sendBroadcast(intent);
+
+
             }
         });
     }
