@@ -1,8 +1,5 @@
 package com.example.batterystatus;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -49,45 +46,12 @@ public class BatteryWatchService extends Service {
         unregisterReceiver(mReceiver);
 
         // TODO 4 : 通知を全て消す
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        manager.cancelAll();
 
         super.onDestroy();
     }
 
     public void showNotification(int level, int status) {
         // TODO 3 : 現在のバッテリー残量を通知に常に表示させる
-        Notification.Builder builder = new Notification.Builder(this);
-        builder.setSmallIcon(R.drawable.battery_number_icon, level);
-        builder.setOngoing(true);
-        builder.setContentTitle("残量: " + level + "%");
-
-        String statusText;
-        switch (status) {
-            case BatteryManager.BATTERY_STATUS_CHARGING :
-                statusText = "充電中";
-                break;
-            case BatteryManager.BATTERY_STATUS_FULL :
-                statusText = "満充電";
-                break;
-            case BatteryManager.BATTERY_STATUS_DISCHARGING :
-                statusText = "放電中";
-                break;
-            case BatteryManager.BATTERY_STATUS_NOT_CHARGING :
-                statusText = "未充電";
-                break;
-            default:
-                statusText = "不明";
-                break;
-        }
-        builder.setContentText(statusText);
-
-        Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        builder.setContentIntent(pendingIntent);
-
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        manager.notify(NOTIFICATION_ID, builder.build());
     }
 
     private class MyBatteryReceiver extends BroadcastReceiver {
@@ -100,7 +64,6 @@ public class BatteryWatchService extends Service {
             int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
 
             // TODO 5 : call showNotification
-            showNotification(level, status);
 
         }
     }

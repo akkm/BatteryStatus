@@ -3,7 +3,6 @@
     package="com.example.batterystatus" >
 
     <!--TODO 6 : uses-permissionを記述 -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -23,11 +22,7 @@
         </service>
 
         <!-- TODO 7 : receiverを記述 -->
-        <receiver android:name=".StartupReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-        </receiver>
+
 
     </application>
 

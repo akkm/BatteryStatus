@@ -1,7 +1,5 @@
 package com.example.batterystatus;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -50,18 +48,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO 1 : 通知を表示する
-                Notification.Builder builder = new Notification.Builder(MainActivity.this);
-                builder.setSmallIcon(R.mipmap.ic_launcher);
-                builder.setContentTitle("メールです");
-                builder.setContentText("みなさんこんにちは");
-                builder.setWhen(System.currentTimeMillis());
 
-                long[] vibratePattern = new long[]{500,1000,500,1000};
-                builder.setVibrate(vibratePattern);
-
-
-                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                manager.notify(NOTIFICATION_ID, builder.build());
             }
         });
 
@@ -70,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO 2 : 通知を消す
-                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                manager.cancel(NOTIFICATION_ID);
+
             }
         });
     }

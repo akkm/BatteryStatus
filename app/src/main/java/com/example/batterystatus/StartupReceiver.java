@@ -13,8 +13,6 @@ public class StartupReceiver extends BroadcastReceiver {
 
         // TODO 8 BatteryWatchServiceを起動
 
-        Intent serviceIntent = new Intent(context, BatteryWatchService.class);
-        context.startService(serviceIntent);
 
     }
 }
