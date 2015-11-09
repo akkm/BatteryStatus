@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         notificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                long[] vibratePattern = new long[]{500,1000,500,1000};
                 // TODO 1 : 通知を表示する
 
             }
