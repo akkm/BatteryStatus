@@ -30,6 +30,17 @@ public class MainActivity extends AppCompatActivity {
                 stopService(new Intent(getApplicationContext(), BatteryWatchService.class));
             }
         });
+
+        Button sendButton = (Button) findViewById(R.id.send_button);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO 4 "ACTION_SCHOO"のBroadcastを送る
+                Intent intent = new Intent("ACTION_SCHOO");
+                intent.putExtra("Message", "メッセージですよ！！！");
+                sendBroadcast(intent);
+            }
+        });
     }
 
     @Override
