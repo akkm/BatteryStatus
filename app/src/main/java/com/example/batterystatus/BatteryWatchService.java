@@ -1,5 +1,8 @@
 package com.example.batterystatus;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,6 +16,7 @@ import java.util.Timer;
 
 public class BatteryWatchService extends Service {
     static String TAG = "BatteryWatchService";
+    private static final int NOTIFICATION_ID = 1235;
     private Timer timer;
     private MyBatteryReceiver mReceiver;
 
@@ -33,21 +37,6 @@ public class BatteryWatchService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand");
-//        timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                IntentFilter intentfilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-//                Intent batteryStatus = registerReceiver(null, intentfilter);
-//
-//                if (batteryStatus!=null) {
-//                    int batteryLevel = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-//                    Log.d(TAG, "Level: " + String.valueOf(batteryLevel));
-//                }
-//            }
-//        }, 0, 5000);
-
-        // TODO 6 バッテリー変化の受信を開始する (ACTION_BATTERY_CHANGED)
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         mReceiver = new MyBatteryReceiver();
         registerReceiver(mReceiver, intentFilter);
@@ -57,21 +46,62 @@ public class BatteryWatchService extends Service {
 
     @Override public void onDestroy() {
         Log.d(TAG, "onDestroy");
-//        timer.cancel();
-
-        // TODO 7 受信を終了する
         unregisterReceiver(mReceiver);
+
+        // TODO 4 : 通知を全て消す
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        manager.cancelAll();
 
         super.onDestroy();
     }
 
+    public void showNotification(int level, int status) {
+        // TODO 3 : 現在のバッテリー残量を通知に常に表示させる
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setSmallIcon(R.drawable.battery_number_icon, level);
+        builder.setOngoing(true);
+        builder.setContentTitle("残量: " + level + "%");
 
-    // TODO 5 バッテリーの状態が変化した時の動作を書くクラスMyBatteryReceiverを作成する
+        String statusText;
+        switch (status) {
+            case BatteryManager.BATTERY_STATUS_CHARGING :
+                statusText = "充電中";
+                break;
+            case BatteryManager.BATTERY_STATUS_FULL :
+                statusText = "満充電";
+                break;
+            case BatteryManager.BATTERY_STATUS_DISCHARGING :
+                statusText = "放電中";
+                break;
+            case BatteryManager.BATTERY_STATUS_NOT_CHARGING :
+                statusText = "未充電";
+                break;
+            default:
+                statusText = "不明";
+                break;
+        }
+        builder.setContentText(statusText);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        builder.setContentIntent(pendingIntent);
+
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        manager.notify(NOTIFICATION_ID, builder.build());
+    }
+
     private class MyBatteryReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
             Log.d(TAG, "level:" + level);
+
+            // BatteryManager.EXTRA_STATUSは、充電中なのか放電中なのかなどの情報が入っています。
+            int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+
+            // TODO 5 : call showNotification
+            showNotification(level, status);
+
         }
     }
 }

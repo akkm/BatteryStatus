@@ -22,5 +22,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="SendBroadcast"/>
+    <Button
+        android:layout_below="@id/send_button"
+        android:id="@+id/notification_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notify"/>
+    <Button
+        android:layout_below="@id/notification_button"
+        android:id="@+id/cancel_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notification Cancel"/>
 
 </RelativeLayout>
